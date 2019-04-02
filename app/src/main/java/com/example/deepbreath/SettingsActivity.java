@@ -1,20 +1,15 @@
 package com.example.deepbreath;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-import org.w3c.dom.Text;
 
-
-public class MainActivity extends AppCompatActivity {
-    public static TextView data;
-
+public class SettingsActivity extends AppCompatActivity {
+    public static TextView dataSettings;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -23,44 +18,34 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-
+                    Intent intent1 = new Intent(SettingsActivity.this, MainActivity.class);
+                    startActivity(intent1);
                     return true;
                 case R.id.navigation_dashboard:
-                    Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-                    startActivity(intent);
+                    Intent intent2 = new Intent(SettingsActivity.this, MapsActivity.class);
+                    startActivity(intent2);
 
 
                     return true;
                 case R.id.navigation_notifications:
-                    Intent intent2 = new Intent(MainActivity.this, SettingsActivity.class);
-                    startActivity(intent2);
+
                     return true;
             }
             return false;
         }
     };
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.settings);
 
-
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigationSettings);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        Button click;
-        click = (Button) findViewById(R.id.button);
-        data = (TextView) findViewById(R.id.data);
-
-
-        click.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fetchData process = new fetchData();
-                process.execute();
-            }
-        });
+        dataSettings = (TextView) findViewById(R.id.textView3);
 
 
 

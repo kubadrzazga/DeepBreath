@@ -1,23 +1,38 @@
 package com.example.deepbreath;
 
+import android.content.Intent;
 import android.os.AsyncTask;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
 
 public class fetchData extends AsyncTask<Void,Void,Void>{
     String data="";
     String dataParsed = "";
     String singleParsed = "";
+   // HashMap<Integer,String> stations = new HashMap<>();
+    private HashMap<Integer,LatLng> coordinate = new HashMap();
+
+
 
     @Override
     protected Void doInBackground(Void... voids) {
@@ -32,17 +47,24 @@ public class fetchData extends AsyncTask<Void,Void,Void>{
                 line = bufferedReader.readLine();
                 data = data + line;
             }
+
+
             JSONArray JA = new JSONArray(data);
             for(int i = 0; i < JA.length(); i++){
                 JSONObject JO = (JSONObject) JA.get(i);
-                singleParsed = "id: " + JO.get("id") + "\n" +
-                        "stacja :" + JO.get("stationName") + "\n" +
-                        "gegrLat " + JO.get("gegrLat") + "\n" +
-                        "gegrLon " + JO.get("gegrLon") + "\n" +
-                        "ulica " + JO.get("addressStreet") + "\n" + "\n";
-                dataParsed = dataParsed + singleParsed;
+                if(JO.get("addressStreet").toString()!="null") {
+                    singleParsed = "stacja :" + JO.get("stationName") + "\n" +
+                            "ulica: " + JO.get("addressStreet") + "\n" + "\n";
+
+                }else{
+                    singleParsed = "stacja :" + JO.get("stationName") + "\n\n";
+                }
+                    dataParsed += singleParsed;
+
+                    coordinate.put(JO.getInt("id"),new LatLng(Double.valueOf((String)JO.get("gegrLat")),Double.valueOf((String)JO.get("gegrLon"))));
 
             }
+
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -60,5 +82,8 @@ public class fetchData extends AsyncTask<Void,Void,Void>{
         super.onPostExecute(aVoid);
 
         MainActivity.data.setText(this.dataParsed);
+        MapsActivity.setCoordinate(coordinate);
+
+
     }
 }

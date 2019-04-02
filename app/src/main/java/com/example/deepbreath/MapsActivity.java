@@ -1,18 +1,31 @@
 package com.example.deepbreath;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.example.deepbreath.fetchData;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private static HashMap<Integer, LatLng> coordinate = new HashMap<>();
+
+    public static void setCoordinate(HashMap<Integer,LatLng> H){coordinate = H; }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +51,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+
+        for(Map.Entry<Integer, LatLng> entry : coordinate.entrySet()) {
+            Integer key = entry.getKey();
+            LatLng value = entry.getValue();
+            mMap.addMarker(new MarkerOptions().position(value).title(key.toString()).icon(BitmapDescriptorFactory.fromResource(R.drawable.cloud)));
+        }
+
+
+
+         //   mMap.addMarker(new MarkerOptions().position(newLatLng));
+
+
+
+        LatLng Poland= new LatLng(52.069272,  19.480250);
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(Poland));
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(5));
+
     }
+
 }
