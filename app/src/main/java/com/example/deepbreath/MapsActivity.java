@@ -23,8 +23,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private static HashMap<Integer, LatLng> coordinate = new HashMap<>();
+    private static HashMap<Integer,String> Params = new HashMap<>();
+    private static HashMap<Integer,ArrayList<Integer>> Sensors = new HashMap<>();
 
-    public static void setCoordinate(HashMap<Integer,LatLng> H){coordinate = H; }
+    public static void setCoordinate(HashMap<Integer,LatLng> H){coordinate = H;}
+    public static void setParams(HashMap<Integer,String> H){Params = H;}
+    public static void setSensors(HashMap<Integer,ArrayList<Integer>> H){Sensors = H;}
 
 
     @Override
@@ -51,22 +55,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-
-
         for(Map.Entry<Integer, LatLng> entry : coordinate.entrySet()) {
             Integer key = entry.getKey();
             LatLng value = entry.getValue();
-            mMap.addMarker(new MarkerOptions().position(value).title(key.toString()).icon(BitmapDescriptorFactory.fromResource(R.drawable.cloud)));
+            String temp="";
+            for (Integer IntI: Objects.requireNonNull(Sensors.get(key))) {
+                temp+=IntI.toString();
+            }
+            mMap.addMarker(new MarkerOptions().position(value).title(key.toString()).icon(BitmapDescriptorFactory.fromResource(R.drawable.cloud)).snippet(temp));
+
+
         }
-
-
-
-         //   mMap.addMarker(new MarkerOptions().position(newLatLng));
-
-
-
-        LatLng Poland= new LatLng(52.069272,  19.480250);
-
+        LatLng Poland= new LatLng(52.069272,19.480250);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(Poland));
         mMap.moveCamera(CameraUpdateFactory.zoomTo(5));
 

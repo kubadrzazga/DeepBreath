@@ -11,9 +11,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
     public static TextView data;
+    public static ArrayList<String> names;
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -40,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    public static void setNames(ArrayList<String> L){names = L;}
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,12 +58,13 @@ public class MainActivity extends AppCompatActivity {
         click = (Button) findViewById(R.id.button);
         data = (TextView) findViewById(R.id.data);
 
+        fetchData process = new fetchData();
+        process.execute();
 
         click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fetchData process = new fetchData();
-                process.execute();
+
             }
         });
 
