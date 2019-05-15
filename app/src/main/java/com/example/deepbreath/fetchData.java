@@ -1,7 +1,10 @@
 package com.example.deepbreath;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.widget.ArrayAdapter;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -12,10 +15,14 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -25,18 +32,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import static android.R.layout.simple_list_item_1;
+import static com.example.deepbreath.MainActivity.arrayAdapter;
+import static java.security.AccessController.getContext;
+
 
 public class fetchData extends AsyncTask<Void,Void,Void>{
-    String data="";
-    String dataParsed = "";
-    String singleParsed = "";
-    String data1="";
-    String dataParsed1 = "";
-    Integer singleParsed1;
-    String data2="";
-    String dataParsed2 = "";
-    String singleParsed2;
-    ArrayList<String> names;
+    private String data="";
+    private String dataParsed = "";
+    private String singleParsed = "";
+    private String data1="";
+    private String dataParsed1 = "";
+    private Integer singleParsed1;
+    private String data2="";
+    private String dataParsed2 = "";
+    private String singleParsed2;
+    private ArrayList<String> names;
    // HashMap<Integer,String> stations = new HashMap<>();
     private HashMap<Integer,LatLng> coordinate = new HashMap();
     private HashMap<Integer,String> Params = new HashMap<>();
@@ -134,10 +145,12 @@ public class fetchData extends AsyncTask<Void,Void,Void>{
             }
             names = new ArrayList<>();
             JSONArray JA = new JSONArray(data);
+
             for(int i = 0; i < JA.length(); i++){
+           // for(int i = 0; i < 5; i++){
                 JSONObject JO = (JSONObject) JA.get(i);
                     singleParsed = JO.get("stationName") + "\n\n";
-                names.add(JO.get("stationName") + "\n\n");
+                    names.add(JO.get("stationName").toString());
                     dataParsed += singleParsed;
 
                 coordinate.put(JO.getInt("id"),new LatLng(Double.valueOf((String)JO.get("gegrLat")),Double.valueOf((String)JO.get("gegrLon"))));
@@ -161,9 +174,9 @@ public class fetchData extends AsyncTask<Void,Void,Void>{
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
 
-        MainActivity.data.setText(this.dataParsed);
+       // MainActivity.data.setText(this.dataParsed);
         MapsActivity.setCoordinate(coordinate);
-        MainActivity.setNames(names);
+        MainActivity.setNames(this.names);
 
 
     }

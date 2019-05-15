@@ -1,6 +1,8 @@
 package com.example.deepbreath;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -64,12 +66,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
             mMap.addMarker(new MarkerOptions().position(value).title(key.toString()).icon(BitmapDescriptorFactory.fromResource(R.drawable.cloud)).snippet(temp));
 
-
         }
+
         LatLng Poland= new LatLng(52.069272,19.480250);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(Poland));
         mMap.moveCamera(CameraUpdateFactory.zoomTo(5));
 
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        names = new ArrayList<>();
+        SharedPreferences sharedPref2 = this.getPreferences(Context.MODE_PRIVATE);
+        int j = sharedPref2.getInt("names_size", -77);
+        for (int i=0; i < j; i++) {
+            names.add(sharedPref2.getString(Integer.toString(i),"null"));
+        }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+
+        SharedPreferences sharedPrefc1 = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPrefc1.edit();
+        editor.putInt("names_size",names.size());
+        int i = 0;
+        for(String S: names) {
+            editor.putString(Integer.toString(i), S);
+            i++;
+        }
+        editor.apply();
     }
 
 }

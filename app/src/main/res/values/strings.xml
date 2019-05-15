@@ -5,4 +5,7 @@
     <string name="title_notifications">ustawienia</string>
     <string name="title_activity_maps">Map</string>
     <string name="icons">Icons made by https://www.flaticon.com/authors/simpleicon SimpleIcon from https://www.flaticon.com/	   www.flaticon.com is licensed by http://creativecommons.org/licenses/by/3.0/ 	CC 3.0 BY</string>
+    <string name="refresh">Refresh</string>
+    <string name="android_search_dialog_example">ANDROID SEARCH DIALOG EXAMPLE</string>
+    <string name="search_hint">Search</string>
 </resources>
